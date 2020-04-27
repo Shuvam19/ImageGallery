@@ -14,15 +14,13 @@ import com.bumptech.glide.Glide;
 import com.example.imagegallery.Model.ApiResponse;
 import com.example.imagegallery.Model.Photo;
 import com.example.imagegallery.R;
-import com.google.gson.annotations.SerializedName;
 
-public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewHolder> {
+public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ImageViewHolder> {
 
     private Context context;
-    @SerializedName(value="photo")
     private ApiResponse apiResponse;
 
-    public ImagesAdapter(Context context, ApiResponse apiResponse) {
+    public SearchAdapter(Context context, ApiResponse apiResponse) {
         this.context = context;
         this.apiResponse = apiResponse;
     }

@@ -6,18 +6,21 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.imagegallery.Model.ApiResponse;
 
-public class ImageViewModel extends ViewModel {
-    private ImageRepo imageRepo;
+import java.util.Map;
 
+public class SearchViewModel extends ViewModel {
+    private SearchRepo searchRepo;
+    private Map<String,String> pass_value;
     private MutableLiveData<ApiResponse> liveData;
 
-    public ImageViewModel() {
-        imageRepo = new ImageRepo();
+    public SearchViewModel(Map<String,String> pass_value) {
+        searchRepo = new SearchRepo();
+        this.pass_value = pass_value;
     }
 
     public LiveData<ApiResponse> getImages(){
         if(liveData==null){
-            liveData = imageRepo.requestImages();
+            liveData = searchRepo.requestImages(pass_value);
         }
         return liveData;
     }

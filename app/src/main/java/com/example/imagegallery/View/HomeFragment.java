@@ -9,17 +9,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.imagegallery.Model.ApiResponse;
+import com.example.imagegallery.Model.Photo;
 import com.example.imagegallery.R;
-import com.example.imagegallery.ViewModel.ImageViewModel;
+import com.example.imagegallery.ViewModel.HomeViewModel;
 
 public class HomeFragment extends Fragment {
-
+    HomeViewModel homeViewModel;
     RecyclerView recyclerView;
-    ImagesAdapter imagesAdapter;
+    HomeAdapter homeAdapter;
 
     @Nullable
     @Override
@@ -28,17 +30,16 @@ public class HomeFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
+        homeAdapter = new HomeAdapter(getActivity());
 
-        ImageViewModel imageViewModel = new ImageViewModel();
-
-        imageViewModel.getImages().observe(getActivity(), new Observer<ApiResponse>() {
-
+        homeViewModel.getPagedListLiveData().observe(getActivity(), new Observer<PagedList<Photo>>() {
             @Override
-            public void onChanged(ApiResponse apiResponse) {
-                imagesAdapter = new ImagesAdapter(getContext(), apiResponse);
-                recyclerView.setAdapter(imagesAdapter);
+            public void onChanged(PagedList<Photo> photos) {
+                homeAdapter.submitList(photos);
             }
         });
+        recyclerView.setAdapter(homeAdapter);
         return view;
     }
 
